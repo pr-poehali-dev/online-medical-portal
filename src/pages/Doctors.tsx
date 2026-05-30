@@ -171,41 +171,74 @@ export default function DoctorsPage() {
       <Header />
 
       {/* Banner */}
-      <div className="bg-gradient-to-r from-cyan-600 via-blue-600 to-violet-600 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-cyan-600 via-blue-600 to-violet-700 relative overflow-hidden">
+        {/* decorative blobs */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: "radial-gradient(circle at 10% 50%, rgba(255,255,255,0.08) 0, transparent 40%), radial-gradient(circle at 90% 30%, rgba(255,255,255,0.06) 0, transparent 35%)"
+          backgroundImage: "radial-gradient(circle at 5% 50%, rgba(255,255,255,0.10) 0, transparent 45%), radial-gradient(circle at 95% 20%, rgba(255,255,255,0.08) 0, transparent 40%), radial-gradient(circle at 60% 100%, rgba(16,185,129,0.18) 0, transparent 40%)"
         }} />
-        <div className="container mx-auto px-4 py-4 relative z-10">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-4">
-              <div className="hidden sm:flex gap-2">
-                {["🩺", "🏥", "💊"].map((e, i) => (
-                  <span key={i} className="text-2xl">{e}</span>
+
+        <div className="container mx-auto px-4 py-6 md:py-8 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-10">
+
+            {/* Text block */}
+            <div className="flex-1 min-w-0">
+              <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 text-white/90 text-xs font-medium px-3 py-1.5 rounded-full mb-4 backdrop-blur-sm">
+                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                Онлайн-запись доступна 24/7
+              </div>
+              <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-white leading-tight mb-3">
+                Более 3 200 врачей<br className="hidden sm:block" /> готовы принять вас<br className="hidden sm:block" />
+                <span className="text-cyan-200">сегодня</span>
+              </h2>
+              <p className="text-white/75 text-sm md:text-base mb-5 max-w-md leading-relaxed">
+                Запись без очередей, реальные отзывы пациентов и лучшие специалисты Москвы — всё в одном месте.
+              </p>
+
+              {/* Stats row */}
+              <div className="flex flex-wrap gap-4 mb-5">
+                {[
+                  { value: "3 200+", label: "врачей" },
+                  { value: "18 500+", label: "отзывов" },
+                  { value: "680+", label: "клиник" },
+                  { value: "4.9 ★", label: "рейтинг" },
+                ].map(s => (
+                  <div key={s.label} className="flex flex-col">
+                    <span className="text-white font-black text-xl leading-none">{s.value}</span>
+                    <span className="text-white/60 text-xs mt-0.5">{s.label}</span>
+                  </div>
                 ))}
               </div>
-              <div>
-                <div className="text-white font-heading font-bold text-base sm:text-lg leading-tight">
-                  Более 3 200 врачей готовы принять вас сегодня
-                </div>
-                <div className="text-white/70 text-xs sm:text-sm mt-0.5">
-                  Онлайн-запись без очередей · Реальные отзывы · Лучшие специалисты Москвы
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <div className="hidden md:flex flex-col items-center bg-white/15 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20">
-                <span className="text-white font-black text-lg leading-none">18 500+</span>
-                <span className="text-white/70 text-xs">отзывов</span>
-              </div>
-              <div className="hidden md:flex flex-col items-center bg-white/15 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20">
-                <span className="text-white font-black text-lg leading-none">4.9 ★</span>
-                <span className="text-white/70 text-xs">рейтинг</span>
-              </div>
-              <button className="flex items-center gap-2 bg-white text-brand-cyan font-bold px-4 py-2.5 rounded-xl text-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
-                <Icon name="CalendarPlus" size={15} />
-                Записаться
+
+              <button className="inline-flex items-center gap-2 bg-white text-brand-cyan font-bold px-6 py-3 rounded-xl text-sm shadow-xl hover:shadow-2xl transition-all hover:-translate-y-0.5">
+                <Icon name="CalendarPlus" size={16} />
+                Записаться к врачу
               </button>
             </div>
+
+            {/* Screenshot */}
+            <div className="hidden md:block flex-shrink-0 w-72 lg:w-80 xl:w-96 relative">
+              <div className="relative">
+                {/* glow */}
+                <div className="absolute -inset-4 bg-white/10 rounded-3xl blur-xl" />
+                <img
+                  src="https://cdn.poehali.dev/projects/dc9c73b1-6f49-42f4-80b7-aa523686dce3/files/28942e55-459b-4b53-b80c-2ffa28154e36.jpg"
+                  alt="Интерфейс записи к врачу"
+                  className="relative z-10 w-full rounded-2xl shadow-2xl border border-white/20 object-cover"
+                  style={{ maxHeight: "220px", objectPosition: "top" }}
+                />
+                {/* floating badge */}
+                <div className="absolute -bottom-3 -left-4 z-20 bg-white rounded-2xl shadow-xl px-4 py-2.5 flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full gradient-brand flex items-center justify-center flex-shrink-0">
+                    <Icon name="Check" size={14} className="text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900 leading-none">Запись подтверждена</div>
+                    <div className="text-xs text-slate-400 mt-0.5">Сегодня в 14:30</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
