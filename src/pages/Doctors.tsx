@@ -2,7 +2,6 @@ import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchBar from "@/components/shared/SearchBar";
-import SpecialtiesBar from "@/components/shared/SpecialtiesBar";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import FilterPopup from "@/components/shared/FilterPopup";
 import Icon from "@/components/ui/icon";
@@ -159,7 +158,6 @@ export default function DoctorsPage() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
-      <SpecialtiesBar />
 
       <div className="bg-white border-b border-slate-100">
         <div className="container mx-auto px-4 py-4">
@@ -195,7 +193,7 @@ export default function DoctorsPage() {
         </div>
 
         {/* Doctor Cards */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 mb-12">
+        <div className="grid grid-cols-1 gap-5 mb-12">
           {doctors.map(d => <DoctorCard key={d.id} doctor={d} />)}
         </div>
 

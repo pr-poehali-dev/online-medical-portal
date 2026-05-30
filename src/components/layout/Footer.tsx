@@ -64,7 +64,19 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-slate-500">
+        {/* Disclaimer */}
+        <div className="border-t border-slate-800 pt-6 mb-5">
+          <div className="flex items-start gap-4 bg-slate-800/60 rounded-2xl p-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-slate-700 border border-slate-600 flex items-center justify-center">
+              <span className="text-white font-black text-sm leading-none">18+</span>
+            </div>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Информация, представленная на сайте, не может быть использована для постановки диагноза, назначения лечения и не заменяет приём врача.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-slate-500">
           <span>© 2024 МедиФайнд. Все права защищены.</span>
           <div className="flex gap-5">
             <a href="#" className="hover:text-slate-300 transition-colors">Политика конфиденциальности</a>
