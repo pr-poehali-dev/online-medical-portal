@@ -11,6 +11,7 @@ import Diagnostics from "./pages/Diagnostics";
 import Authors from "./pages/Authors";
 import Publications from "./pages/Publications";
 import Services from "./pages/Services";
+import DoctorProfile from "./pages/DoctorProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/doctors" element={<Doctors />} />
+          <Route path="/doctors/:id" element={<DoctorProfile />} />
           <Route path="/clinics" element={<Clinics />} />
           <Route path="/diagnostic-centers" element={<DiagnosticCenters />} />
           <Route path="/diagnostics" element={<Diagnostics />} />

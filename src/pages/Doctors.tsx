@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchBar from "@/components/shared/SearchBar";
@@ -20,13 +21,14 @@ function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
 function DoctorCard({ doctor }: { doctor: typeof doctors[0] }) {
   const [selectedClinic, setSelectedClinic] = useState(0);
   const [selectedDate, setSelectedDate] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow duration-200">
       <div className="flex flex-col lg:flex-row">
 
         {/* LEFT: Doctor Info */}
-        <div className="flex-1 p-5 md:p-6">
+        <div className="flex-1 p-5 md:p-6 cursor-pointer" onClick={() => navigate(`/doctors/${doctor.id}`)}>
           <div className="flex flex-col sm:flex-row gap-5">
             {/* Photo */}
             <div className="flex-shrink-0">
