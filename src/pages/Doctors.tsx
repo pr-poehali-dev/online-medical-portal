@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -164,6 +164,175 @@ function DoctorCard({ doctor }: { doctor: typeof doctors[0] }) {
   );
 }
 
+const AI_SUGGESTIONS = [
+  "Какой врач нужен при головной боли?",
+  "Как выбрать кардиолога?",
+  "Болит спина — к кому идти?",
+  "Нужен врач для ребёнка",
+];
+
+const AI_RESPONSES: Record<string, string> = {
+  "Какой врач нужен при головной боли?": "При головных болях стоит обратиться к **неврологу**. Если боли сопровождаются повышенным давлением — к **терапевту** или **кардиологу**. Покажу подходящих специалистов?",
+  "Как выбрать кардиолога?": "Обращайте внимание на стаж от 10 лет, наличие учёной степени и отзывы пациентов. Среди наших врачей Петрова А.С. — кандидат наук с 14-летним опытом, рейтинг 4.9 ⭐",
+  "Болит спина — к кому идти?": "При болях в спине чаще всего нужен **невролог** или **ортопед**. Если боль отдаёт в ногу — обязательно к неврологу. Записать к специалисту?",
+  "Нужен врач для ребёнка": "Для детей нужен **педиатр** — он даст направление к узким специалистам. Также у нас есть детские офтальмологи и неврологи. Уточните, что беспокоит ребёнка?",
+};
+
+function AiBanner() {
+  const [messages, setMessages] = useState<{ role: "user" | "ai"; text: string }[]>([
+    { role: "ai", text: "Привет! Я помогу подобрать нужного специалиста. Опишите симптомы или выберите вопрос ниже 👇" },
+  ]);
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, typing]);
+
+  const sendMessage = (text: string) => {
+    if (!text.trim()) return;
+    setMessages(prev => [...prev, { role: "user", text }]);
+    setInput("");
+    setTyping(true);
+    setTimeout(() => {
+      const reply = AI_RESPONSES[text] ?? "Понял вас! Рекомендую записаться на консультацию к терапевту — он направит к нужному специалисту. Выбрать время?";
+      setTyping(false);
+      setMessages(prev => [...prev, { role: "ai", text: reply }]);
+    }, 900);
+  };
+
+  const renderText = (text: string) =>
+    text.split(/\*\*(.*?)\*\*/g).map((part, i) =>
+      i % 2 === 1 ? <strong key={i}>{part}</strong> : part
+    );
+
+  return (
+    <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-violet-950 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: "radial-gradient(circle at 15% 60%, rgba(6,182,212,0.12) 0, transparent 45%), radial-gradient(circle at 85% 30%, rgba(139,92,246,0.12) 0, transparent 40%)"
+      }} />
+
+      <div className="container mx-auto px-4 py-6 relative z-10">
+        <div className="flex flex-col lg:flex-row items-stretch gap-6">
+
+          {/* Left: promo text */}
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 text-white/80 text-xs font-medium px-3 py-1.5 rounded-full mb-4 w-fit backdrop-blur-sm">
+              <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
+              ИИ-помощник · бесплатно
+            </div>
+            <h2 className="font-heading font-black text-2xl sm:text-3xl text-white leading-tight mb-3">
+              Не знаете, какой<br />врач вам нужен?
+            </h2>
+            <p className="text-white/60 text-sm leading-relaxed mb-5 max-w-xs">
+              Опишите симптомы — ИИ подберёт подходящего специалиста и поможет записаться за 30 секунд.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { icon: "Zap", label: "Мгновенный ответ" },
+                { icon: "ShieldCheck", label: "Проверенные врачи" },
+                { icon: "Clock", label: "Доступен 24/7" },
+              ].map(f => (
+                <div key={f.label} className="flex items-center gap-1.5 bg-white/8 border border-white/10 px-3 py-1.5 rounded-xl text-xs text-white/70">
+                  <Icon name={f.icon as Parameters<typeof Icon>[0]["name"]} size={12} className="text-violet-400" />
+                  {f.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: chat window */}
+          <div className="lg:w-[420px] xl:w-[480px] bg-white/8 backdrop-blur-sm border border-white/12 rounded-2xl overflow-hidden flex flex-col" style={{ minHeight: 300 }}>
+            {/* Chat header */}
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Icon name="Bot" size={16} className="text-white" />
+              </div>
+              <div>
+                <div className="text-white text-sm font-semibold leading-none">МедИИ</div>
+                <div className="flex items-center gap-1 mt-0.5">
+                  <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                  <span className="text-white/50 text-xs">онлайн</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-3 space-y-2.5" style={{ maxHeight: 180 }}>
+              {messages.map((m, i) => (
+                <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                  {m.role === "ai" && (
+                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center flex-shrink-0 mr-2 mt-0.5">
+                      <Icon name="Bot" size={11} className="text-white" />
+                    </div>
+                  )}
+                  <div className={`max-w-[80%] px-3 py-2 rounded-2xl text-xs leading-relaxed ${
+                    m.role === "user"
+                      ? "bg-brand-cyan text-white rounded-br-sm"
+                      : "bg-white/12 text-white/90 rounded-bl-sm"
+                  }`}>
+                    {renderText(m.text)}
+                  </div>
+                </div>
+              ))}
+              {typing && (
+                <div className="flex justify-start">
+                  <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center flex-shrink-0 mr-2 mt-0.5">
+                    <Icon name="Bot" size={11} className="text-white" />
+                  </div>
+                  <div className="bg-white/12 px-3 py-2.5 rounded-2xl rounded-bl-sm flex items-center gap-1">
+                    {[0, 1, 2].map(d => (
+                      <div key={d} className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: `${d * 150}ms` }} />
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div ref={bottomRef} />
+            </div>
+
+            {/* Suggestions */}
+            {messages.length <= 1 && (
+              <div className="px-3 pb-2 flex flex-wrap gap-1.5">
+                {AI_SUGGESTIONS.map(s => (
+                  <button
+                    key={s}
+                    onClick={() => sendMessage(s)}
+                    className="text-xs px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 border border-white/10 transition-all"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Input */}
+            <div className="px-3 pb-3 pt-1">
+              <div className="flex gap-2 bg-white/10 border border-white/15 rounded-xl px-3 py-1.5">
+                <input
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && sendMessage(input)}
+                  placeholder="Опишите симптомы..."
+                  className="flex-1 bg-transparent text-white text-xs placeholder-white/30 outline-none min-w-0"
+                />
+                <button
+                  onClick={() => sendMessage(input)}
+                  disabled={!input.trim()}
+                  className="w-7 h-7 rounded-lg bg-brand-cyan disabled:opacity-30 flex items-center justify-center flex-shrink-0 hover:opacity-90 transition-all"
+                >
+                  <Icon name="Send" size={13} className="text-white" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function DoctorsPage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const allReviews = [...reviews, ...reviews].slice(0, 14);
@@ -172,78 +341,7 @@ export default function DoctorsPage() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
 
-      {/* Banner */}
-      <div className="bg-gradient-to-r from-cyan-600 via-blue-600 to-violet-700 relative overflow-hidden">
-        {/* decorative blobs */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: "radial-gradient(circle at 5% 50%, rgba(255,255,255,0.10) 0, transparent 45%), radial-gradient(circle at 95% 20%, rgba(255,255,255,0.08) 0, transparent 40%), radial-gradient(circle at 60% 100%, rgba(16,185,129,0.18) 0, transparent 40%)"
-        }} />
-
-        <div className="container mx-auto px-4 py-6 md:py-8 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-10">
-
-            {/* Text block */}
-            <div className="flex-1 min-w-0">
-              <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 text-white/90 text-xs font-medium px-3 py-1.5 rounded-full mb-4 backdrop-blur-sm">
-                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                Онлайн-запись доступна 24/7
-              </div>
-              <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-white leading-tight mb-3">
-                Более 3 200 врачей<br className="hidden sm:block" /> готовы принять вас<br className="hidden sm:block" />
-                <span className="text-cyan-200">сегодня</span>
-              </h2>
-              <p className="text-white/75 text-sm md:text-base mb-5 max-w-md leading-relaxed">
-                Запись без очередей, реальные отзывы пациентов и лучшие специалисты Москвы — всё в одном месте.
-              </p>
-
-              {/* Stats row */}
-              <div className="flex flex-wrap gap-4 mb-5">
-                {[
-                  { value: "3 200+", label: "врачей" },
-                  { value: "18 500+", label: "отзывов" },
-                  { value: "680+", label: "клиник" },
-                  { value: "4.9 ★", label: "рейтинг" },
-                ].map(s => (
-                  <div key={s.label} className="flex flex-col">
-                    <span className="text-white font-black text-xl leading-none">{s.value}</span>
-                    <span className="text-white/60 text-xs mt-0.5">{s.label}</span>
-                  </div>
-                ))}
-              </div>
-
-              <button className="inline-flex items-center gap-2 bg-white text-brand-cyan font-bold px-6 py-3 rounded-xl text-sm shadow-xl hover:shadow-2xl transition-all hover:-translate-y-0.5">
-                <Icon name="CalendarPlus" size={16} />
-                Записаться к врачу
-              </button>
-            </div>
-
-            {/* Screenshot */}
-            <div className="hidden md:block flex-shrink-0 w-72 lg:w-80 xl:w-96 relative">
-              <div className="relative">
-                {/* glow */}
-                <div className="absolute -inset-4 bg-white/10 rounded-3xl blur-xl" />
-                <img
-                  src="https://cdn.poehali.dev/projects/dc9c73b1-6f49-42f4-80b7-aa523686dce3/files/28942e55-459b-4b53-b80c-2ffa28154e36.jpg"
-                  alt="Интерфейс записи к врачу"
-                  className="relative z-10 w-full rounded-2xl shadow-2xl border border-white/20 object-cover"
-                  style={{ maxHeight: "220px", objectPosition: "top" }}
-                />
-                {/* floating badge */}
-                <div className="absolute -bottom-3 -left-4 z-20 bg-white rounded-2xl shadow-xl px-4 py-2.5 flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full gradient-brand flex items-center justify-center flex-shrink-0">
-                    <Icon name="Check" size={14} className="text-white" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-slate-900 leading-none">Запись подтверждена</div>
-                    <div className="text-xs text-slate-400 mt-0.5">Сегодня в 14:30</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
+      <AiBanner />
 
       <div className="bg-white border-b border-slate-100">
         <div className="container mx-auto px-4 py-4">
