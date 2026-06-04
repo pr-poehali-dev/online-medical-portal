@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import CityModal from "@/components/shared/CityModal";
 
 const navLinks = [
   { label: "Врачи", href: "/doctors" },
@@ -14,6 +15,8 @@ const navLinks = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cityOpen, setCityOpen] = useState(false);
+  const [city, setCity] = useState("Москва");
   const location = useLocation();
 
   return (
@@ -49,9 +52,12 @@ export default function Header() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
-            <button className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 text-slate-600 text-sm font-medium hover:border-brand-cyan hover:text-brand-cyan transition-all duration-200 bg-white">
+            <button
+              onClick={() => setCityOpen(true)}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 text-slate-600 text-sm font-medium hover:border-brand-cyan hover:text-brand-cyan transition-all duration-200 bg-white"
+            >
               <Icon name="MapPin" size={15} className="text-brand-cyan" />
-              <span className="hidden md:inline">Москва</span>
+              <span className="hidden md:inline">{city}</span>
               <Icon name="ChevronDown" size={13} className="hidden md:inline" />
             </button>
             <button className="px-4 py-2 rounded-xl gradient-brand text-white text-sm font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-200">
@@ -87,14 +93,24 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
-              <button className="mt-2 flex items-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-700 text-sm font-medium">
+              <button
+                onClick={() => { setMobileOpen(false); setCityOpen(true); }}
+                className="mt-2 flex items-center gap-2 px-4 py-3 rounded-xl border border-slate-200 text-slate-700 text-sm font-medium"
+              >
                 <Icon name="MapPin" size={15} className="text-brand-cyan" />
-                Выбрать местоположение
+                {city}
               </button>
             </div>
           </div>
         )}
       </div>
+
+      <CityModal
+        isOpen={cityOpen}
+        onClose={() => setCityOpen(false)}
+        currentCity={city}
+        onSelect={setCity}
+      />
     </header>
   );
 }
