@@ -5,16 +5,31 @@ import Icon from "@/components/ui/icon";
 
 /* ── Типы табов ───────────────────────────────────────────── */
 const TABS = [
-  { id: "doctors",    label: "Врачи",       icon: "Stethoscope" },
-  { id: "clinics",    label: "Клиники",     icon: "Building2"   },
-  { id: "diagnostics",label: "Диагностика", icon: "ScanLine"    },
-  { id: "services",   label: "Услуги",      icon: "LayoutGrid"  },
+  { id: "doctors",      label: "Врачи",         icon: "Stethoscope" },
+  { id: "specialties",  label: "Специальность",  icon: "BookOpen"    },
+  { id: "clinics",      label: "Клиники",        icon: "Building2"   },
+  { id: "diagnostics",  label: "Диагностика",    icon: "ScanLine"    },
+  { id: "services",     label: "Услуги",         icon: "LayoutGrid"  },
 ] as const;
 
 type TabId = typeof TABS[number]["id"];
 
 /* ── Подсказки по табам ───────────────────────────────────── */
 const SUGGESTIONS: Record<TabId, { icon: string; label: string }[]> = {
+  specialties: [
+    { icon: "Stethoscope", label: "Терапевт" },
+    { icon: "Heart",       label: "Кардиолог" },
+    { icon: "Brain",       label: "Невролог" },
+    { icon: "Eye",         label: "Офтальмолог" },
+    { icon: "Baby",        label: "Педиатр" },
+    { icon: "HeartPulse",  label: "Гинеколог" },
+    { icon: "Bone",        label: "Ортопед" },
+    { icon: "Layers",      label: "Дерматолог" },
+    { icon: "SmilePlus",   label: "Психолог" },
+    { icon: "Scissors",    label: "Хирург" },
+    { icon: "Droplets",    label: "Уролог" },
+    { icon: "Activity",    label: "Эндокринолог" },
+  ],
   doctors: [
     { icon: "Stethoscope", label: "Терапевт" },
     { icon: "Heart",       label: "Кардиолог" },
@@ -53,6 +68,7 @@ const SUGGESTIONS: Record<TabId, { icon: string; label: string }[]> = {
 
 const PLACEHOLDERS: Record<TabId, string> = {
   doctors:     "Введите специальность или имя врача...",
+  specialties: "Введите специальность...",
   clinics:     "Название клиники или специализация...",
   diagnostics: "МРТ, УЗИ, КТ, анализы...",
   services:    "Название услуги...",
@@ -60,6 +76,7 @@ const PLACEHOLDERS: Record<TabId, string> = {
 
 const HREFS: Record<TabId, string> = {
   doctors:     "/doctors",
+  specialties: "/doctors",
   clinics:     "/clinics",
   diagnostics: "/diagnostics",
   services:    "/services",
