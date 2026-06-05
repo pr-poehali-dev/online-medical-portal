@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Modal from "@/components/ui/modal";
 import Icon from "@/components/ui/icon";
 
@@ -24,6 +24,15 @@ interface CityModalProps {
 
 export default function CityModal({ isOpen, onClose, currentCity, onSelect }: CityModalProps) {
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setLoading(true);
+      const t = setTimeout(() => setLoading(false), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [isOpen]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -45,6 +54,58 @@ export default function CityModal({ isOpen, onClose, currentCity, onSelect }: Ci
       subtitle="Найдём врачей и клиники рядом с вами"
       size="sm"
     >
+      {loading ? (
+        <div className="px-6 pt-5 pb-6">
+          {/* Search skeleton */}
+          <div className="h-10 rounded-xl bg-slate-100 animate-pulse mb-5" />
+
+          {/* Current city skeleton */}
+          <div className="mb-4">
+            <div className="h-3 w-28 rounded bg-slate-100 animate-pulse mb-2" />
+            <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-100">
+              <div className="w-7 h-7 rounded-lg bg-slate-200 animate-pulse flex-shrink-0" />
+              <div className="h-4 w-24 rounded bg-slate-200 animate-pulse" />
+              <div className="w-4 h-4 rounded bg-slate-200 animate-pulse ml-auto" />
+            </div>
+          </div>
+
+          {/* Detect skeleton */}
+          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-slate-100 mb-5">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 animate-pulse flex-shrink-0" />
+            <div className="h-4 w-40 rounded bg-slate-100 animate-pulse" />
+          </div>
+
+          {/* Popular skeleton */}
+          <div>
+            <div className="h-3 w-32 rounded bg-slate-100 animate-pulse mb-3" />
+            <div className="space-y-1">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-3 px-3 py-2.5 rounded-xl">
+                  <div className="w-4 h-4 rounded bg-slate-100 animate-pulse flex-shrink-0" style={{ animationDelay: `${i * 80}ms` }} />
+                  <div
+                    className="h-4 rounded bg-slate-100 animate-pulse"
+                    style={{ width: `${55 + (i % 4) * 15}px`, animationDelay: `${i * 80}ms` }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Loading label */}
+          <div className="flex items-center justify-center gap-2 mt-5 text-slate-400">
+            <div className="flex gap-1">
+              {[0,1,2].map(d => (
+                <div
+                  key={d}
+                  className="w-1.5 h-1.5 rounded-full bg-brand-cyan/60 animate-bounce"
+                  style={{ animationDelay: `${d * 150}ms` }}
+                />
+              ))}
+            </div>
+            <span className="text-xs">Загружаем список городов...</span>
+          </div>
+        </div>
+      ) : (
       <div className="px-6 pt-4 pb-6">
 
         {/* Search */}
@@ -119,6 +180,7 @@ export default function CityModal({ isOpen, onClose, currentCity, onSelect }: Ci
           </>
         )}
       </div>
+      )}
     </Modal>
   );
 }
