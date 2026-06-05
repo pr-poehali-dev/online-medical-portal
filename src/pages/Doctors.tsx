@@ -335,13 +335,30 @@ function AiBanner() {
 
 const PAGE_SIZE = 4;
 
+const SORT_OPTIONS = [
+  { value: "rating", label: "По рейтингу" },
+  { value: "price_asc", label: "Цена: по возрастанию" },
+  { value: "price_desc", label: "Цена: по убыванию" },
+  { value: "experience", label: "По стажу" },
+];
+
 export default function DoctorsPage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState("rating");
+  const [sortOpen, setSortOpen] = useState(false);
   const allReviews = [...reviews, ...reviews].slice(0, 14);
 
-  const totalPages = Math.ceil(doctors.length / PAGE_SIZE);
-  const paginated = doctors.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const sorted = [...doctors].sort((a, b) => {
+    if (sort === "rating") return b.rating - a.rating;
+    if (sort === "price_asc") return a.price - b.price;
+    if (sort === "price_desc") return b.price - a.price;
+    if (sort === "experience") return b.experience - a.experience;
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+  const paginated = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const goTo = (p: number) => {
     setPage(p);
@@ -398,7 +415,33 @@ export default function DoctorsPage() {
               {f}
             </button>
           ))}
-          <div className="ml-auto text-sm text-slate-500">Найдено: <span className="font-semibold text-slate-800">3 214 врачей</span></div>
+
+          {/* Sort dropdown */}
+          <div className="ml-auto relative">
+            <button
+              onClick={() => setSortOpen(v => !v)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm hover:border-brand-cyan hover:text-brand-cyan transition-all"
+            >
+              <Icon name="ArrowUpDown" size={14} />
+              {SORT_OPTIONS.find(o => o.value === sort)?.label}
+              <Icon name="ChevronDown" size={14} className={`transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+            </button>
+            {sortOpen && (
+              <div className="absolute right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-lg z-20 min-w-[200px] overflow-hidden">
+                {SORT_OPTIONS.map(o => (
+                  <button
+                    key={o.value}
+                    onClick={() => { setSort(o.value); setSortOpen(false); setPage(1); }}
+                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                      sort === o.value ? "bg-cyan-50 text-brand-cyan font-semibold" : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Doctor Cards */}
