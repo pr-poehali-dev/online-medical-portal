@@ -333,9 +333,20 @@ function AiBanner() {
   );
 }
 
+const PAGE_SIZE = 4;
+
 export default function DoctorsPage() {
   const [filterOpen, setFilterOpen] = useState(false);
+  const [page, setPage] = useState(1);
   const allReviews = [...reviews, ...reviews].slice(0, 14);
+
+  const totalPages = Math.ceil(doctors.length / PAGE_SIZE);
+  const paginated = doctors.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const goTo = (p: number) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -391,9 +402,50 @@ export default function DoctorsPage() {
         </div>
 
         {/* Doctor Cards */}
-        <div className="flex flex-col gap-5 mb-12">
-          {doctors.map(d => <DoctorCard key={d.id} doctor={d} />)}
+        <div className="flex flex-col gap-5 mb-6">
+          {paginated.map(d => <DoctorCard key={d.id} doctor={d} />)}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-1.5 mb-12">
+            <button
+              onClick={() => goTo(page - 1)}
+              disabled={page === 1}
+              className="w-9 h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center text-slate-500 hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              <Icon name="ChevronLeft" size={16} />
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => {
+              const show = p === 1 || p === totalPages || Math.abs(p - page) <= 1;
+              const dots = !show && (p === 2 || p === totalPages - 1);
+              if (!show && !dots) return null;
+              if (dots) return <span key={p} className="w-9 h-9 flex items-center justify-center text-slate-400 text-sm">…</span>;
+              return (
+                <button
+                  key={p}
+                  onClick={() => goTo(p)}
+                  className={`w-9 h-9 rounded-xl text-sm font-semibold transition-all border ${
+                    p === page
+                      ? "gradient-brand text-white border-transparent shadow-md"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-brand-cyan hover:text-brand-cyan"
+                  }`}
+                >
+                  {p}
+                </button>
+              );
+            })}
+
+            <button
+              onClick={() => goTo(page + 1)}
+              disabled={page === totalPages}
+              className="w-9 h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center text-slate-500 hover:border-brand-cyan hover:text-brand-cyan disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              <Icon name="ChevronRight" size={16} />
+            </button>
+          </div>
+        )}
 
         {/* Reviews Block */}
         <div className="mb-8">
