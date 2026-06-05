@@ -7,6 +7,8 @@ import Icon from "@/components/ui/icon";
 const TABS = [
   { id: "doctors",      label: "Врачи",         icon: "Stethoscope" },
   { id: "specialties",  label: "Специальность",  icon: "BookOpen"    },
+  { id: "metro",        label: "Метро",          icon: "Train"       },
+  { id: "district",     label: "Округ",          icon: "Map"         },
   { id: "clinics",      label: "Клиники",        icon: "Building2"   },
   { id: "diagnostics",  label: "Диагностика",    icon: "ScanLine"    },
   { id: "services",     label: "Услуги",         icon: "LayoutGrid"  },
@@ -16,6 +18,48 @@ type TabId = typeof TABS[number]["id"];
 
 /* ── Подсказки по табам ───────────────────────────────────── */
 const SUGGESTIONS: Record<TabId, { icon: string; label: string }[]> = {
+  metro: [
+    { icon: "Train", label: "Арбатская" },
+    { icon: "Train", label: "Автозаводская" },
+    { icon: "Train", label: "Белорусская" },
+    { icon: "Train", label: "Войковская" },
+    { icon: "Train", label: "Динамо" },
+    { icon: "Train", label: "Добрынинская" },
+    { icon: "Train", label: "Киевская" },
+    { icon: "Train", label: "Китай-город" },
+    { icon: "Train", label: "Красные Ворота" },
+    { icon: "Train", label: "Кузнецкий мост" },
+    { icon: "Train", label: "Лубянка" },
+    { icon: "Train", label: "Новослободская" },
+    { icon: "Train", label: "Октябрьская" },
+    { icon: "Train", label: "Павелецкая" },
+    { icon: "Train", label: "Парк культуры" },
+    { icon: "Train", label: "Площадь революции" },
+    { icon: "Train", label: "Пушкинская" },
+    { icon: "Train", label: "Смоленская" },
+    { icon: "Train", label: "Сокольники" },
+    { icon: "Train", label: "Таганская" },
+    { icon: "Train", label: "Театральная" },
+    { icon: "Train", label: "Тверская" },
+    { icon: "Train", label: "Третьяковская" },
+    { icon: "Train", label: "Университет" },
+    { icon: "Train", label: "Чистые пруды" },
+    { icon: "Train", label: "Щербаковская" },
+  ],
+  district: [
+    { icon: "Map", label: "Центральный округ (ЦАО)" },
+    { icon: "Map", label: "Северный округ (САО)" },
+    { icon: "Map", label: "Северо-Восточный округ (СВАО)" },
+    { icon: "Map", label: "Восточный округ (ВАО)" },
+    { icon: "Map", label: "Юго-Восточный округ (ЮВАО)" },
+    { icon: "Map", label: "Южный округ (ЮАО)" },
+    { icon: "Map", label: "Юго-Западный округ (ЮЗАО)" },
+    { icon: "Map", label: "Западный округ (ЗАО)" },
+    { icon: "Map", label: "Северо-Западный округ (СЗАО)" },
+    { icon: "Map", label: "Зеленоградский округ (ЗелАО)" },
+    { icon: "Map", label: "Троицкий округ (ТАО)" },
+    { icon: "Map", label: "Новомосковский округ (НАО)" },
+  ],
   specialties: [
     { icon: "Stethoscope", label: "Терапевт" },
     { icon: "Heart",       label: "Кардиолог" },
@@ -69,6 +113,8 @@ const SUGGESTIONS: Record<TabId, { icon: string; label: string }[]> = {
 const PLACEHOLDERS: Record<TabId, string> = {
   doctors:     "Введите специальность или имя врача...",
   specialties: "Введите специальность...",
+  metro:       "Введите название станции метро...",
+  district:    "Введите название округа...",
   clinics:     "Название клиники или специализация...",
   diagnostics: "МРТ, УЗИ, КТ, анализы...",
   services:    "Название услуги...",
@@ -77,6 +123,8 @@ const PLACEHOLDERS: Record<TabId, string> = {
 const HREFS: Record<TabId, string> = {
   doctors:     "/doctors",
   specialties: "/doctors",
+  metro:       "/doctors",
+  district:    "/doctors",
   clinics:     "/clinics",
   diagnostics: "/diagnostics",
   services:    "/services",
@@ -142,12 +190,12 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }: Sear
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mt-3">
+        <div className="flex gap-1 mt-3 overflow-x-auto scrollbar-none pb-0.5">
           {TABS.map(t => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+              className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                 tab === t.id
                   ? "bg-brand-cyan text-white shadow-sm"
                   : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
