@@ -343,21 +343,35 @@ export default function DoctorsPage() {
 
       <AiBanner />
 
-      <div className="bg-white border-b border-slate-100">
-        <div className="container mx-auto px-4 py-4">
-          <SearchBar />
+      {/* Hero search */}
+      <section className="hero-bg py-10 md:py-14 relative">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-7">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-black text-white mb-3 leading-tight">
+              Врачи в <span className="text-cyan-200">Москве</span>
+            </h2>
+            <p className="text-white/70 text-sm md:text-base max-w-xl mx-auto">
+              3 200+ специалистов · онлайн-запись · реальные отзывы
+            </p>
+          </div>
+          <SearchBar large className="max-w-2xl mx-auto" />
+          <div className="flex flex-wrap justify-center gap-2 mt-5">
+            {["Терапевт", "Кардиолог", "Невролог", "Педиатр", "Гинеколог", "Дерматолог"].map(s => (
+              <button
+                key={s}
+                className="px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs font-medium border border-white/20 backdrop-blur-sm transition-all"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
       <div className="container mx-auto px-4 py-6">
         <Breadcrumbs items={[{ label: "Врачи" }]} />
 
-        <div className="mt-6 mb-4">
-          <h1 className="font-heading font-black text-2xl md:text-3xl text-slate-900 mb-3">Врачи в Москве</h1>
-          <p className="text-slate-600 text-sm leading-relaxed max-w-2xl">
-            На нашем портале представлено более 3 200 опытных врачей различных специальностей. Вы можете выбрать специалиста по рейтингу, стажу, цене приёма и расположению клиники. Онлайн-запись доступна круглосуточно.
-          </p>
-        </div>
+
 
         {/* Filter Bar */}
         <div className="flex items-center gap-3 mb-6 flex-wrap">
