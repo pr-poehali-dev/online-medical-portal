@@ -13,6 +13,12 @@ const navLinks = [
   { label: "Авторы", href: "/authors", icon: "Users" },
 ];
 
+const extraLinks = [
+  { label: "Кто лечит?", href: "/doctors", icon: "HeartPulse" },
+  { label: "Отзывы", href: "/reviews", icon: "MessageSquare" },
+  { label: "Контакты", href: "/contacts", icon: "Phone" },
+];
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
@@ -137,33 +143,66 @@ export default function Header() {
           </div>
 
           {/* Nav links */}
-          <nav className="flex-1 overflow-y-auto px-4 py-3 space-y-1">
-            {navLinks.map((link) => {
-              const active = location.pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
-                    active
-                      ? "bg-cyan-50 text-brand-cyan"
-                      : "text-slate-700 hover:bg-slate-50 hover:text-brand-cyan"
-                  }`}
-                >
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                    active ? "bg-cyan-100" : "bg-slate-100"
-                  }`}>
-                    <Icon
-                      name={link.icon as Parameters<typeof Icon>[0]["name"]}
-                      size={16}
-                      className={active ? "text-brand-cyan" : "text-slate-500"}
-                    />
-                  </div>
-                  {link.label}
-                  {active && <Icon name="ChevronRight" size={14} className="text-brand-cyan ml-auto" />}
-                </Link>
-              );
-            })}
+          <nav className="flex-1 overflow-y-auto px-4 py-3">
+            <div className="space-y-1">
+              {navLinks.map((link) => {
+                const active = location.pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
+                      active
+                        ? "bg-cyan-50 text-brand-cyan"
+                        : "text-slate-700 hover:bg-slate-50 hover:text-brand-cyan"
+                    }`}
+                  >
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                      active ? "bg-cyan-100" : "bg-slate-100"
+                    }`}>
+                      <Icon
+                        name={link.icon as Parameters<typeof Icon>[0]["name"]}
+                        size={16}
+                        className={active ? "text-brand-cyan" : "text-slate-500"}
+                      />
+                    </div>
+                    {link.label}
+                    {active && <Icon name="ChevronRight" size={14} className="text-brand-cyan ml-auto" />}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-slate-100 space-y-1">
+              <div className="px-3 mb-2">
+                <span className="text-xs text-slate-400 uppercase tracking-wide font-semibold">Дополнительно</span>
+              </div>
+              {extraLinks.map((link) => {
+                const active = location.pathname === link.href && link.href !== "/doctors";
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                      active
+                        ? "bg-cyan-50 text-brand-cyan"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-brand-cyan"
+                    }`}
+                  >
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                      active ? "bg-cyan-100" : "bg-slate-100"
+                    }`}>
+                      <Icon
+                        name={link.icon as Parameters<typeof Icon>[0]["name"]}
+                        size={15}
+                        className={active ? "text-brand-cyan" : "text-slate-400"}
+                      />
+                    </div>
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
           </nav>
 
           {/* Drawer footer */}
