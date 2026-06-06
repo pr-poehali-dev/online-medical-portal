@@ -9,6 +9,9 @@ export const doctors = [
     rating: 4.9,
     reviews: 312,
     price: 2500,
+    priceClinic: 2500,
+    priceHome: 4500,
+    discount: 20,
     phone: "+7 (495) 123-45-67",
     description: "Специализируется на диагностике и лечении заболеваний сердечно-сосудистой системы. Кандидат медицинских наук.",
     clinics: [
@@ -49,6 +52,9 @@ export const doctors = [
     rating: 5.0,
     reviews: 487,
     price: 4000,
+    priceClinic: 4000,
+    priceHome: 7000,
+    discount: null,
     phone: "+7 (495) 987-65-43",
     description: "Эксперт в области неврологии и нейрохирургии. Более 20 лет практики. Автор более 40 научных публикаций.",
     clinics: [
@@ -88,6 +94,9 @@ export const doctors = [
     rating: 4.8,
     reviews: 203,
     price: 1800,
+    priceClinic: 1800,
+    priceHome: 3500,
+    discount: 15,
     phone: "+7 (495) 555-12-34",
     description: "Специализируется на лечении заболеваний глаз, лазерной коррекции зрения, детской офтальмологии.",
     clinics: [
@@ -125,6 +134,9 @@ export const doctors = [
     rating: 4.7,
     reviews: 189,
     price: 3500,
+    priceClinic: 3500,
+    priceHome: null,
+    discount: 10,
     phone: "+7 (495) 222-33-44",
     description: "Опытный хирург-онколог. Специализируется на малоинвазивных операциях и лапароскопии.",
     clinics: [
@@ -146,6 +158,9 @@ export const doctors = [
     rating: 4.9,
     reviews: 342,
     price: 2200,
+    priceClinic: 2200,
+    priceHome: 4000,
+    discount: null,
     phone: "+7 (495) 333-44-55",
     description: "Специалист по женскому здоровью, ведению беременности и гинекологической эндокринологии.",
     clinics: [
@@ -167,6 +182,9 @@ export const doctors = [
     rating: 4.8,
     reviews: 276,
     price: 1600,
+    priceClinic: 1600,
+    priceHome: 3000,
+    discount: 25,
     phone: "+7 (495) 444-55-66",
     description: "Детский врач с современным подходом к лечению. Особый интерес — аллергология и пульмонология у детей.",
     clinics: [
@@ -188,6 +206,9 @@ export const doctors = [
     rating: 4.9,
     reviews: 415,
     price: 2800,
+    priceClinic: 2800,
+    priceHome: 5000,
+    discount: null,
     phone: "+7 (495) 555-66-77",
     description: "Эксперт в области дерматологии и эстетической медицины. Специализируется на лечении акне и псориаза.",
     clinics: [
@@ -209,6 +230,9 @@ export const doctors = [
     rating: 4.7,
     reviews: 198,
     price: 2900,
+    priceClinic: 2900,
+    priceHome: 5500,
+    discount: 15,
     phone: "+7 (495) 666-77-88",
     description: "Специалист по урологии и мужскому здоровью. Опыт лечения МКБ, аденомы простаты, мужского бесплодия.",
     clinics: [
@@ -230,6 +254,9 @@ export const doctors = [
     rating: 4.8,
     reviews: 231,
     price: 2100,
+    priceClinic: 2100,
+    priceHome: 3800,
+    discount: null,
     phone: "+7 (495) 777-88-99",
     description: "Специализируется на заболеваниях щитовидной железы, сахарном диабете и нарушениях обмена веществ.",
     clinics: [
@@ -251,6 +278,9 @@ export const doctors = [
     rating: 4.9,
     reviews: 389,
     price: 3200,
+    priceClinic: 3200,
+    priceHome: 6000,
+    discount: null,
     phone: "+7 (495) 888-99-00",
     description: "Ведущий ортопед-травматолог, специалист по замене суставов и лечению спортивных травм.",
     clinics: [
@@ -272,6 +302,9 @@ export const doctors = [
     rating: 5.0,
     reviews: 164,
     price: 3800,
+    priceClinic: 3800,
+    priceHome: 6500,
+    discount: 10,
     phone: "+7 (495) 100-11-22",
     description: "Когнитивно-поведенческий терапевт. Работает с тревожными расстройствами, депрессией, паническими атаками.",
     clinics: [
@@ -293,6 +326,9 @@ export const doctors = [
     rating: 4.6,
     reviews: 257,
     price: 1900,
+    priceClinic: 1900,
+    priceHome: 3500,
+    discount: null,
     phone: "+7 (495) 200-22-33",
     description: "Терапевт широкого профиля с углублённой специализацией в гастроэнтерологии и болезнях ЖКТ.",
     clinics: [

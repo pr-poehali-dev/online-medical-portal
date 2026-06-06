@@ -71,9 +71,50 @@ function DoctorCard({ doctor }: { doctor: typeof doctors[0] }) {
                 </span>
               </div>
               <p className="text-sm text-slate-600 leading-relaxed mb-3">{doctor.description}</p>
-              <div className="flex items-center gap-3">
-                <div className="text-xl font-heading font-black text-slate-900">{doctor.price.toLocaleString()} ₽</div>
-                <div className="text-xs text-slate-400">за приём</div>
+              <div className="flex flex-wrap gap-3 mt-1">
+                {/* Приём в клинике */}
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+                  <Icon name="Building2" size={13} className="text-brand-cyan flex-shrink-0" />
+                  <div>
+                    <div className="text-[10px] text-slate-400 leading-none mb-0.5">Приём в клинике</div>
+                    <div className="flex items-baseline gap-1.5">
+                      {doctor.discount ? (
+                        <>
+                          <span className="text-base font-heading font-black text-slate-900">
+                            {Math.round(doctor.priceClinic * (1 - doctor.discount / 100)).toLocaleString()} ₽
+                          </span>
+                          <span className="text-xs text-slate-400 line-through">{doctor.priceClinic.toLocaleString()} ₽</span>
+                          <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">−{doctor.discount}%</span>
+                        </>
+                      ) : (
+                        <span className="text-base font-heading font-black text-slate-900">{doctor.priceClinic.toLocaleString()} ₽</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Выезд на дом */}
+                {doctor.priceHome && (
+                  <div className="flex items-center gap-2 bg-violet-50 border border-violet-100 rounded-xl px-3 py-2">
+                    <Icon name="Home" size={13} className="text-violet-500 flex-shrink-0" />
+                    <div>
+                      <div className="text-[10px] text-slate-400 leading-none mb-0.5">Выезд на дом</div>
+                      <div className="flex items-baseline gap-1.5">
+                        {doctor.discount ? (
+                          <>
+                            <span className="text-base font-heading font-black text-slate-900">
+                              {Math.round(doctor.priceHome * (1 - doctor.discount / 100)).toLocaleString()} ₽
+                            </span>
+                            <span className="text-xs text-slate-400 line-through">{doctor.priceHome.toLocaleString()} ₽</span>
+                            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">−{doctor.discount}%</span>
+                          </>
+                        ) : (
+                          <span className="text-base font-heading font-black text-slate-900">{doctor.priceHome.toLocaleString()} ₽</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
