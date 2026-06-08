@@ -8,6 +8,164 @@ import FilterPopup from "@/components/shared/FilterPopup";
 import Icon from "@/components/ui/icon";
 import { doctors, reviews } from "@/data/mockData";
 
+interface BookingPopupProps {
+  doctor: typeof doctors[0];
+  slot: string;
+  date: string;
+  clinicIndex: number;
+  onClose: () => void;
+}
+
+function BookingPopup({ doctor, slot, date, clinicIndex, onClose }: BookingPopupProps) {
+  const clinic = doctor.clinics[clinicIndex];
+  const [selectedClinicIdx, setSelectedClinicIdx] = useState(clinicIndex);
+  const [fio, setFio] = useState("");
+  const [phone, setPhone] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fio.trim() || !phone.trim()) return;
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-[480px] mx-4 overflow-hidden"
+        style={{ animation: "bookingIn 200ms cubic-bezier(0.34,1.56,0.64,1)" }}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between px-6 py-4 border-b border-slate-100">
+          <div>
+            <h3 className="font-heading font-bold text-lg text-slate-900">Запись на приём</h3>
+            <p className="text-sm text-slate-500 mt-0.5">Заполните данные для подтверждения</p>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-xl transition-colors text-slate-400 hover:text-slate-700 ml-3 flex-shrink-0">
+            <Icon name="X" size={18} />
+          </button>
+        </div>
+
+        {submitted ? (
+          <div className="px-6 py-10 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto mb-4">
+              <Icon name="CheckCircle2" size={32} className="text-emerald-500" />
+            </div>
+            <h4 className="font-heading font-bold text-xl text-slate-900 mb-1">Запись подтверждена!</h4>
+            <p className="text-sm text-slate-500 mb-1">
+              {doctor.name}
+            </p>
+            <p className="text-sm font-semibold text-slate-800 mb-4">
+              {date} в {slot} · {doctor.clinics[selectedClinicIdx].name}
+            </p>
+            <button onClick={onClose} className="px-6 py-2.5 gradient-brand text-white rounded-xl font-semibold text-sm hover:opacity-90 transition-all shadow-md">
+              Отлично!
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+
+            {/* Doctor preview */}
+            <div className="flex items-center gap-3 bg-slate-50 rounded-xl px-4 py-3">
+              <img src={doctor.photo} alt={doctor.name} className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-slate-800 truncate">{doctor.name}</div>
+                <div className="text-xs text-slate-400">{doctor.specialties.join(", ")}</div>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <div className="text-xs text-slate-400">Время</div>
+                <div className="text-sm font-bold text-brand-cyan">{slot}</div>
+              </div>
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Дата приёма</label>
+              <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-700">
+                <Icon name="Calendar" size={15} className="text-brand-cyan flex-shrink-0" />
+                <span className="font-medium">{date}</span>
+              </div>
+            </div>
+
+            {/* Clinic */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Клиника</label>
+              <div className="space-y-1.5">
+                {doctor.clinics.map((c, i) => (
+                  <button
+                    type="button"
+                    key={c.id}
+                    onClick={() => setSelectedClinicIdx(i)}
+                    className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl border text-left text-sm transition-all ${
+                      selectedClinicIdx === i
+                        ? "border-brand-cyan bg-cyan-50/60 shadow-sm"
+                        : "border-slate-200 bg-white hover:border-slate-300"
+                    }`}
+                  >
+                    <div className={`mt-0.5 w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${
+                      selectedClinicIdx === i ? "border-brand-cyan" : "border-slate-300"
+                    }`}>
+                      {selectedClinicIdx === i && <div className="w-2 h-2 rounded-full bg-brand-cyan" />}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-slate-800">{c.name}</div>
+                      <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
+                        <span className="w-4 h-4 bg-red-600 rounded-full inline-flex items-center justify-center text-white font-bold text-[8px] flex-shrink-0">М</span>
+                        {c.metro} · {c.address}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* FIO */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">ФИО пациента</label>
+              <div className="relative">
+                <Icon name="User" size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  required
+                  value={fio}
+                  onChange={e => setFio(e.target.value)}
+                  placeholder="Иванов Иван Иванович"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-cyan focus:ring-2 focus:ring-cyan-100 transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Номер телефона</label>
+              <div className="relative">
+                <Icon name="Phone" size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  required
+                  type="tel"
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  placeholder="+7 (999) 000-00-00"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-cyan focus:ring-2 focus:ring-cyan-100 transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              className="w-full gradient-brand text-white font-semibold py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-md mt-2"
+            >
+              Подтвердить запись
+            </button>
+          </form>
+        )}
+      </div>
+      <style>{`@keyframes bookingIn { from { opacity: 0; transform: scale(0.95) translateY(10px) } to { opacity: 1; transform: scale(1) translateY(0) } }`}</style>
+    </div>
+  );
+}
+
 function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
   return (
     <div className="flex gap-0.5">
@@ -21,9 +179,11 @@ function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
 function DoctorCard({ doctor }: { doctor: typeof doctors[0] }) {
   const [selectedClinic, setSelectedClinic] = useState(0);
   const [selectedDate, setSelectedDate] = useState(0);
+  const [booking, setBooking] = useState<{ slot: string } | null>(null);
   const navigate = useNavigate();
 
   return (
+    <>
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow duration-200">
       <div className="flex flex-col lg:flex-row">
 
@@ -186,6 +346,7 @@ function DoctorCard({ doctor }: { doctor: typeof doctors[0] }) {
               {doctor.clinics[selectedClinic].slots.map((slot) => (
                 <button
                   key={slot}
+                  onClick={() => setBooking({ slot })}
                   className="px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-cyan-200 text-cyan-700 bg-white hover:bg-brand-cyan hover:text-white hover:border-transparent transition-all"
                 >
                   {slot}
@@ -202,6 +363,17 @@ function DoctorCard({ doctor }: { doctor: typeof doctors[0] }) {
 
       </div>
     </div>
+
+    {booking && (
+      <BookingPopup
+        doctor={doctor}
+        slot={booking.slot}
+        date={doctor.dates[selectedDate]}
+        clinicIndex={selectedClinic}
+        onClose={() => setBooking(null)}
+      />
+    )}
+    </>
   );
 }
 
