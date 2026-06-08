@@ -183,20 +183,25 @@ export default function IndexPage() {
         <div className="container mx-auto px-4">
           <h2 className="font-heading font-black text-2xl md:text-3xl text-slate-900 text-center mb-3">Специальности врачей</h2>
           <p className="text-slate-500 text-center mb-10 text-sm">Найдите нужного специалиста быстро</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {visibleSpecialties.map((s) => (
-              <Link
-                key={s.label}
-                to="/doctors"
-                className="flex flex-col items-center text-center p-4 rounded-2xl border border-slate-100 hover:border-brand-cyan/40 hover:shadow-md transition-all duration-200 group card-hover bg-white"
-              >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all group-hover:scale-110 ${s.bgColor}`}>
-                  <Icon name={s.icon} size={22} fallback="Circle" className={s.textColor} />
-                </div>
-                <span className="font-semibold text-sm text-slate-800 mb-1">{s.label}</span>
-                <span className="text-xs text-slate-400">{s.count} врачей</span>
-              </Link>
-            ))}
+          <div className="relative">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {visibleSpecialties.map((s) => (
+                <Link
+                  key={s.label}
+                  to="/doctors"
+                  className="flex flex-col items-center text-center p-4 rounded-2xl border border-slate-100 hover:border-brand-cyan/40 hover:shadow-md transition-all duration-200 group card-hover bg-white"
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all group-hover:scale-110 ${s.bgColor}`}>
+                    <Icon name={s.icon} size={22} fallback="Circle" className={s.textColor} />
+                  </div>
+                  <span className="font-semibold text-sm text-slate-800 mb-1">{s.label}</span>
+                  <span className="text-xs text-slate-400">{s.count} врачей</span>
+                </Link>
+              ))}
+            </div>
+            {!showAllSpecialties && (
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            )}
           </div>
 
           {!showAllSpecialties && (
