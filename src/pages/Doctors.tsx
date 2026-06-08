@@ -703,6 +703,80 @@ export default function DoctorsPage() {
           </div>
         )}
 
+        {/* SEO Content Block: Андролог */}
+        <div className="mb-10 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="px-8 py-7 border-b border-slate-100 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+              <Icon name="Stethoscope" size={22} className="text-blue-500" />
+            </div>
+            <div>
+              <h2 className="font-heading font-black text-xl md:text-2xl text-slate-900">Андролог — мужской врач-специалист</h2>
+              <p className="text-sm text-slate-400 mt-0.5">Диагностика и лечение мужского здоровья</p>
+            </div>
+          </div>
+
+          <div className="px-8 py-7 grid md:grid-cols-2 gap-8">
+            {/* Left column */}
+            <div className="space-y-5">
+              <div>
+                <h3 className="font-heading font-bold text-base text-slate-800 mb-2">Кто такой андролог?</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Андролог — врач узкой специализации, занимающийся диагностикой и лечением заболеваний мужской репродуктивной и мочеполовой системы. Специалист помогает при проблемах с потенцией, гормональном дисбалансе, бесплодии и воспалительных процессах.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-heading font-bold text-base text-slate-800 mb-3">С чем обращаются к андрологу</h3>
+                <ul className="space-y-2">
+                  {[
+                    "Эректильная дисфункция и снижение либидо",
+                    "Мужское бесплодие и нарушения спермограммы",
+                    "Воспаление предстательной железы (простатит)",
+                    "Варикоцеле и водянка яичка",
+                    "Гормональные нарушения у мужчин",
+                    "Заболевания, передающиеся половым путём",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
+                      <div className="w-4 h-4 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Icon name="Check" size={10} className="text-blue-500" />
+                      </div>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Right column */}
+            <div className="space-y-5">
+              <div>
+                <h3 className="font-heading font-bold text-base text-slate-800 mb-3">Когда нужна консультация</h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                  Не откладывайте визит к андрологу, если вас беспокоят боль или дискомфорт в паховой области, изменения в работе мочеполовой системы, снижение мужских функций или вы планируете отцовство. Ранняя диагностика в разы увеличивает эффективность лечения.
+                </p>
+                <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-sm text-blue-800">
+                  Мужчинам старше 40 лет рекомендуется профилактический осмотр андролога <strong>раз в год</strong> — даже при отсутствии жалоб.
+                </div>
+              </div>
+              <div>
+                <h3 className="font-heading font-bold text-base text-slate-800 mb-3">Что включает приём</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { icon: "ClipboardList", text: "Сбор анамнеза" },
+                    { icon: "Search", text: "УЗИ-диагностика" },
+                    { icon: "FlaskConical", text: "Анализы крови и спермограмма" },
+                    { icon: "ShieldCheck", text: "Назначение лечения" },
+                  ].map((item) => (
+                    <div key={item.text} className="flex items-center gap-2.5 bg-slate-50 rounded-xl px-3 py-2.5">
+                      <Icon name={item.icon} size={15} className="text-slate-400 flex-shrink-0" />
+                      <span className="text-xs text-slate-700 font-medium">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Reviews Block */}
         <div className="mb-8">
           <h2 className="font-heading font-black text-xl md:text-2xl text-slate-900 mb-6">Последние отзывы</h2>
