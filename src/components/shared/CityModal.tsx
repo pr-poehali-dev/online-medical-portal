@@ -2,6 +2,48 @@ import { useState, useMemo, useEffect } from "react";
 import Modal from "@/components/ui/modal";
 import Icon from "@/components/ui/icon";
 
+function ConfirmExitDialog({ onConfirm, onCancel }: { onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
+      <div
+        className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-[340px] mx-4 overflow-hidden"
+        style={{ animation: "scaleIn 180ms cubic-bezier(0.34,1.56,0.64,1)" }}
+      >
+        {/* Icon */}
+        <div className="flex justify-center pt-7 pb-1">
+          <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center">
+            <Icon name="AlertTriangle" size={26} className="text-amber-500" />
+          </div>
+        </div>
+
+        {/* Text */}
+        <div className="px-6 pt-4 pb-6 text-center">
+          <h3 className="font-heading font-bold text-lg text-slate-900 mb-1.5">Прервать запись?</h3>
+          <p className="text-sm text-slate-500 leading-relaxed">Вы действительно хотите прервать запись? Выбор города не будет сохранён.</p>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-2 px-6 pb-6">
+          <button
+            onClick={onCancel}
+            className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-50 transition-all"
+          >
+            Вернуться
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-all shadow-sm"
+          >
+            Да, прервать
+          </button>
+        </div>
+      </div>
+      <style>{`@keyframes scaleIn { from { opacity: 0; transform: scale(0.95) translateY(8px) } to { opacity: 1; transform: scale(1) translateY(0) } }`}</style>
+    </div>
+  );
+}
+
 const POPULAR_CITIES = [
   "Москва", "Санкт-Петербург", "Новосибирск", "Екатеринбург", "Казань",
   "Нижний Новгород", "Краснодар", "Самара", "Уфа", "Ростов-на-Дону",
@@ -25,6 +67,11 @@ interface CityModalProps {
 export default function CityModal({ isOpen, onClose, currentCity, onSelect }: CityModalProps) {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmExit, setConfirmExit] = useState(false);
+
+  const handleClose = () => setConfirmExit(true);
+  const handleConfirmExit = () => { setConfirmExit(false); setSearch(""); onClose(); };
+  const handleCancelExit = () => setConfirmExit(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -47,9 +94,11 @@ export default function CityModal({ isOpen, onClose, currentCity, onSelect }: Ci
   };
 
   return (
+    <>
+    {confirmExit && <ConfirmExitDialog onConfirm={handleConfirmExit} onCancel={handleCancelExit} />}
     <Modal
       isOpen={isOpen}
-      onClose={() => { setSearch(""); onClose(); }}
+      onClose={handleClose}
       title="Выберите город"
       subtitle="Найдём врачей и клиники рядом с вами"
       size="sm"
@@ -182,6 +231,7 @@ export default function CityModal({ isOpen, onClose, currentCity, onSelect }: Ci
       </div>
       )}
     </Modal>
+    </>
   );
 }
 
