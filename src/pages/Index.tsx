@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -56,7 +57,12 @@ const specialtyList = [
   { label: "Эндокринолог", icon: "Activity", count: 110, bgColor: "bg-emerald-50", textColor: "text-emerald-500" },
 ];
 
+const INITIAL_VISIBLE = 10;
+
 export default function IndexPage() {
+  const [showAllSpecialties, setShowAllSpecialties] = useState(false);
+  const visibleSpecialties = showAllSpecialties ? specialtyList : specialtyList.slice(0, INITIAL_VISIBLE);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -178,7 +184,7 @@ export default function IndexPage() {
           <h2 className="font-heading font-black text-2xl md:text-3xl text-slate-900 text-center mb-3">Специальности врачей</h2>
           <p className="text-slate-500 text-center mb-10 text-sm">Найдите нужного специалиста быстро</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {specialtyList.map((s) => (
+            {visibleSpecialties.map((s) => (
               <Link
                 key={s.label}
                 to="/doctors"
@@ -192,6 +198,18 @@ export default function IndexPage() {
               </Link>
             ))}
           </div>
+
+          {!showAllSpecialties && (
+            <div className="flex justify-center mt-7">
+              <button
+                onClick={() => setShowAllSpecialties(true)}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold hover:border-brand-cyan hover:text-brand-cyan transition-all shadow-sm"
+              >
+                <Icon name="ChevronDown" size={16} />
+                Смотреть ещё {specialtyList.length - INITIAL_VISIBLE} специальности
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
