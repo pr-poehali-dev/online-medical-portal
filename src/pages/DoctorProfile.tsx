@@ -76,6 +76,7 @@ export default function DoctorProfile() {
   const [selectedClinic, setSelectedClinic] = useState(0);
   const [selectedDate, setSelectedDate] = useState(0);
   const [reviewFilter, setReviewFilter] = useState<ReviewFilter>("all");
+  const [visibleCount, setVisibleCount] = useState(3);
 
   if (!doctor) {
     return (
@@ -293,7 +294,7 @@ export default function DoctorProfile() {
             {reviewFilters.map(f => (
               <button
                 key={f.key}
-                onClick={() => setReviewFilter(f.key)}
+                onClick={() => { setReviewFilter(f.key); setVisibleCount(3); }}
                 className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold border transition-all ${
                   reviewFilter === f.key ? f.activeColor : f.color + " bg-white hover:bg-slate-50"
                 }`}
@@ -311,7 +312,7 @@ export default function DoctorProfile() {
             </div>
           ) : (
             <div className="space-y-4">
-              {filteredReviews.map(r => (
+              {filteredReviews.slice(0, visibleCount).map(r => (
                 <div key={r.id} className={`rounded-2xl border p-4 ${ratingBg(r.rating)}`}>
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="flex items-center gap-2.5">
@@ -342,6 +343,15 @@ export default function DoctorProfile() {
                 </div>
               ))}
             </div>
+          )}
+          {filteredReviews.length > visibleCount && (
+            <button
+              onClick={() => setVisibleCount(v => v + 3)}
+              className="w-full mt-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-600 hover:border-brand-cyan hover:text-brand-cyan transition-all flex items-center justify-center gap-2"
+            >
+              <Icon name="ChevronDown" size={16} />
+              Показать ещё ({filteredReviews.length - visibleCount})
+            </button>
           )}
         </div>
 
