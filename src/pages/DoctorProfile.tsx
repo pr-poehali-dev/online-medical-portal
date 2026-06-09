@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -16,6 +16,57 @@ function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
 }
 
 type ReviewFilter = "all" | "positive" | "neutral" | "negative";
+
+function OtherDoctorsSlider({ currentId }: { currentId: number }) {
+  const others = doctors.filter(d => d.id !== currentId);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const scroll = (dir: "left" | "right") => {
+    sliderRef.current?.scrollBy({ left: dir === "left" ? -320 : 320, behavior: "smooth" });
+  };
+  return (
+    <div className="bg-white border-t border-slate-100 py-10">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-heading font-black text-xl md:text-2xl text-slate-900">Другие врачи</h2>
+          <div className="flex gap-2">
+            <button onClick={() => scroll("left")} className="w-9 h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center hover:border-brand-cyan hover:text-brand-cyan transition-colors">
+              <Icon name="ChevronLeft" size={18} />
+            </button>
+            <button onClick={() => scroll("right")} className="w-9 h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center hover:border-brand-cyan hover:text-brand-cyan transition-colors">
+              <Icon name="ChevronRight" size={18} />
+            </button>
+          </div>
+        </div>
+        <div ref={sliderRef} className="flex gap-4 overflow-x-auto scrollbar-none pb-2" style={{ scrollSnapType: "x mandatory" }}>
+          {others.map(d => (
+            <Link
+              key={d.id}
+              to={`/doctors/${d.id}`}
+              className="flex-shrink-0 w-64 bg-white border border-slate-100 rounded-2xl p-4 hover:shadow-md hover:border-brand-cyan/40 transition-all"
+              style={{ scrollSnapAlign: "start" }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <img src={d.photo} alt={d.name} className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
+                <div className="min-w-0">
+                  <div className="font-semibold text-sm text-slate-900 leading-snug line-clamp-2">{d.name}</div>
+                  <div className="text-xs text-slate-500 mt-0.5 truncate">{d.specialties[0]}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 mb-2">
+                <StarRating rating={d.rating} size={11} />
+                <span className="text-xs text-slate-500">{d.rating} · {d.reviews} отзывов</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-400">{d.experience} лет опыта</span>
+                <span className="text-sm font-bold text-brand-cyan">от {d.price.toLocaleString()} ₽</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function DoctorProfile() {
   const { id } = useParams();
@@ -389,6 +440,9 @@ export default function DoctorProfile() {
         </div>
 
       </div>
+
+      {/* Other Doctors Slider */}
+      <OtherDoctorsSlider currentId={doctor.id} />
 
       <Footer />
     </div>
