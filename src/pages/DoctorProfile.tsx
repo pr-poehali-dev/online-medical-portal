@@ -327,6 +327,18 @@ export default function DoctorProfile() {
                     </div>
                   </div>
                   <p className="text-sm text-slate-700 leading-relaxed">{r.text}</p>
+                  {r.clinicReply && (
+                    <div className="mt-3 ml-4 border-l-2 border-brand-cyan/40 pl-4 bg-cyan-50/50 rounded-r-xl py-3 pr-3">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <div className="w-5 h-5 rounded-full bg-brand-cyan/15 flex items-center justify-center flex-shrink-0">
+                          <Icon name="Building2" size={11} className="text-brand-cyan" />
+                        </div>
+                        <span className="text-xs font-semibold text-brand-cyan">{r.clinicReply.author}</span>
+                        <span className="text-xs text-slate-400">{r.clinicReply.date}</span>
+                      </div>
+                      <p className="text-xs text-slate-600 leading-relaxed">{r.clinicReply.text}</p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
