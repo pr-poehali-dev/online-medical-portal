@@ -436,14 +436,14 @@ export default function DoctorProfile() {
             <div className="border-t border-slate-100" />
 
             {/* Повышение квалификации */}
-            {doctor.courses && (
-              <div>
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
-                    <Icon name="BookOpen" size={16} className="text-amber-600" />
-                  </div>
-                  <h3 className="font-semibold text-slate-900">Повышение квалификации</h3>
+            <div>
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+                  <Icon name="BookOpen" size={16} className="text-amber-600" />
                 </div>
+                <h3 className="font-semibold text-slate-900">Повышение квалификации</h3>
+              </div>
+              {doctor.courses && doctor.courses.length > 0 ? (
                 <div className="ml-11 space-y-3">
                   {doctor.courses.map((c, i) => (
                     <div key={i} className="flex gap-3 p-3 rounded-xl bg-amber-50/60 border border-amber-100">
@@ -455,8 +455,13 @@ export default function DoctorProfile() {
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="ml-11 flex items-center gap-2 text-sm text-slate-400 py-2">
+                  <Icon name="Info" size={14} className="flex-shrink-0" />
+                  Информация о курсах повышения квалификации не указана
+                </div>
+              )}
+            </div>
 
           </div>
         </div>
