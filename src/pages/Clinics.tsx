@@ -37,9 +37,13 @@ function ClinicCard({ clinic }: { clinic: typeof clinics[0] }) {
                   <Icon name="MapPin" size={13} className="text-brand-cyan flex-shrink-0" />
                   <span>{clinic.address}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="w-5 h-5 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-[10px] flex-shrink-0">М</span>
-                  <span className="text-sm text-slate-600">{clinic.metro}</span>
+                  {clinic.metro.map((m, i) => (
+                    <span key={m} className="text-sm text-slate-600">
+                      {m}{i < clinic.metro.length - 1 && <span className="text-slate-300 ml-1.5">·</span>}
+                    </span>
+                  ))}
                 </div>
               </div>
               <div className="text-right flex-shrink-0">
