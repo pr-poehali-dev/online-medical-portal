@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchBar from "@/components/shared/SearchBar";
@@ -17,9 +18,9 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-function ClinicCard({ clinic }: { clinic: typeof clinics[0] }) {
+function ClinicCard({ clinic, onClick }: { clinic: typeof clinics[0]; onClick: () => void }) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover cursor-pointer" onClick={onClick}>
       <div className="h-1.5 gradient-brand" />
       <div className="p-5 md:p-6">
         <div className="flex items-start gap-5">
@@ -115,6 +116,7 @@ function ClinicCard({ clinic }: { clinic: typeof clinics[0] }) {
 const QUICK_FILTERS = ["ОМС", "ДМС", "С парковкой", "Рядом с метро", "Рейтинг 4.5+"];
 
 export default function ClinicsPage() {
+  const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -126,7 +128,7 @@ export default function ClinicsPage() {
   const filtered = allClinics.filter(c =>
     c.name.toLowerCase().includes(search.toLowerCase()) ||
     c.address.toLowerCase().includes(search.toLowerCase()) ||
-    c.metro.toLowerCase().includes(search.toLowerCase())
+    c.metro.some(m => m.toLowerCase().includes(search.toLowerCase()))
   );
 
   return (
@@ -200,7 +202,7 @@ export default function ClinicsPage() {
 
         {/* Список клиник — одна в строку */}
         <div className="flex flex-col gap-4">
-          {filtered.map((c, i) => <ClinicCard key={i} clinic={c} />)}
+          {filtered.map((c, i) => <ClinicCard key={i} clinic={c} onClick={() => navigate(`/clinics/${c.id}`)} />)}
         </div>
       </div>
 

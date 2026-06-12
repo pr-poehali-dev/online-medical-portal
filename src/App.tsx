@@ -12,6 +12,7 @@ import Authors from "./pages/Authors";
 import Publications from "./pages/Publications";
 import Services from "./pages/Services";
 import DoctorProfile from "./pages/DoctorProfile";
+import ClinicProfile from "./pages/ClinicProfile";
 import NotFound from "./pages/NotFound";
 import Loaders from "./pages/Loaders";
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/doctors" element={<Doctors />} />
           <Route path="/doctors/:id" element={<DoctorProfile />} />
           <Route path="/clinics" element={<Clinics />} />
+          <Route path="/clinics/:id" element={<ClinicProfile />} />
           <Route path="/diagnostic-centers" element={<DiagnosticCenters />} />
           <Route path="/diagnostics" element={<Diagnostics />} />
           <Route path="/services" element={<Services />} />
