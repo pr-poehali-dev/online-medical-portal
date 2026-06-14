@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
@@ -86,6 +87,10 @@ const serviceCategories = [
 ];
 
 export default function ServicesPage() {
+  const [openCategories, setOpenCategories] = useState<string[]>(serviceCategories.map(c => c.title));
+  const toggle = (title: string) =>
+    setOpenCategories(prev => prev.includes(title) ? prev.filter(t => t !== title) : [...prev, title]);
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
@@ -117,39 +122,51 @@ export default function ServicesPage() {
         </div>
 
         <div className="space-y-5">
-          {serviceCategories.map((cat) => (
-            <div key={cat.title} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-              <div className={`bg-gradient-to-r ${cat.color} p-5 flex items-center gap-3`}>
-                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                  <Icon name={cat.icon} size={22} className="text-white" fallback="Circle" />
-                </div>
-                <h2 className="font-heading font-bold text-lg text-white">{cat.title}</h2>
-                <div className="ml-auto text-white/70 text-sm">{cat.services.length} услуги</div>
-              </div>
-              <div className="divide-y divide-slate-50">
-                {cat.services.map((service) => (
-                  <div key={service.name} className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors group">
-                    <div className="flex-1">
-                      <span className="text-sm font-medium text-slate-800 group-hover:text-slate-900">{service.name}</span>
-                      <div className="flex items-center gap-3 mt-0.5">
-                        <span className="text-xs text-slate-400 flex items-center gap-1">
-                          <Icon name="Clock" size={11} />
-                          {service.time}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4 ml-4">
-                      <span className="font-bold text-slate-900 text-sm">{service.price}</span>
-                      <button className={`flex-shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r ${cat.color} text-white text-xs font-semibold hover:opacity-90 transition-all shadow-sm hidden sm:flex items-center gap-1`}>
-                        <Icon name="CalendarPlus" size={12} />
-                        Записаться
-                      </button>
-                    </div>
+          {serviceCategories.map((cat) => {
+            const isOpen = openCategories.includes(cat.title);
+            return (
+              <div key={cat.title} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <button
+                  onClick={() => toggle(cat.title)}
+                  className={`w-full bg-gradient-to-r ${cat.color} p-5 flex items-center gap-3 text-left`}
+                >
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Icon name={cat.icon} size={22} className="text-white" fallback="Circle" />
                   </div>
-                ))}
+                  <h2 className="font-heading font-bold text-lg text-white flex-1">{cat.title}</h2>
+                  <Icon
+                    name="ChevronDown"
+                    size={20}
+                    className={`text-white/80 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isOpen && (
+                  <div className="divide-y divide-slate-50">
+                    {cat.services.map((service) => (
+                      <div key={service.name} className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors group">
+                        <div className="flex-1">
+                          <span className="text-sm font-medium text-slate-800 group-hover:text-slate-900">{service.name}</span>
+                          <div className="flex items-center gap-3 mt-0.5">
+                            <span className="text-xs text-slate-400 flex items-center gap-1">
+                              <Icon name="Clock" size={11} />
+                              {service.time}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4 ml-4">
+                          <span className="font-bold text-slate-900 text-sm">{service.price}</span>
+                          <button className={`flex-shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r ${cat.color} text-white text-xs font-semibold hover:opacity-90 transition-all shadow-sm hidden sm:flex items-center gap-1`}>
+                            <Icon name="CalendarPlus" size={12} />
+                            Записаться
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
