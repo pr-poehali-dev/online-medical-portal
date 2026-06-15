@@ -14,6 +14,7 @@ import Services from "./pages/Services";
 import DoctorProfile from "./pages/DoctorProfile";
 import ClinicProfile from "./pages/ClinicProfile";
 import NotFound from "./pages/NotFound";
+import NotFoundPage from "./pages/NotFoundPage";
 import Loaders from "./pages/Loaders";
 
 const queryClient = new QueryClient();
@@ -37,7 +38,7 @@ const App = () => (
           <Route path="/publications" element={<Publications />} />
           <Route path="/loaders" element={<Loaders />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
