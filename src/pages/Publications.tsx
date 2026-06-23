@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
@@ -16,6 +17,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function PublicationsPage() {
+  const navigate = useNavigate();
   const allPubs = [...publications, ...publications].slice(0, 12);
 
   return (
@@ -53,7 +55,7 @@ export default function PublicationsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
           {allPubs.map((pub, i) => (
-            <article key={i} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover group cursor-pointer">
+            <article key={i} onClick={() => navigate(`/publications/${pub.id}`)} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover group cursor-pointer">
               {/* Fake image placeholder */}
               <div className="h-40 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center">
