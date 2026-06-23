@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
@@ -5,6 +6,7 @@ import Icon from "@/components/ui/icon";
 import { authors, publications } from "@/data/mockData";
 
 export default function AuthorsPage() {
+  const navigate = useNavigate();
   const allAuthors = [...authors, ...authors].slice(0, 8);
 
   return (
@@ -30,7 +32,7 @@ export default function AuthorsPage() {
             const authorPubs = publications.filter(p => p.author.startsWith(author.name.split(" ")[0]));
             const pubCount = authorPubs.length || author.articles;
             return (
-              <div key={i} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover group">
+              <div key={i} onClick={() => navigate(`/authors/${author.id}`)} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden card-hover group cursor-pointer">
                 <div className="h-1.5 bg-gradient-to-r from-violet-500 to-purple-600" />
                 <div className="p-5 text-center">
                   <div className="relative inline-block mb-4">
