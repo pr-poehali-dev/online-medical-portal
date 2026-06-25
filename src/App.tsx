@@ -15,6 +15,7 @@ import Services from "./pages/Services";
 import DoctorProfile from "./pages/DoctorProfile";
 import ClinicProfile from "./pages/ClinicProfile";
 import PublicationDetail from "./pages/PublicationDetail";
+import Contacts from "./pages/Contacts";
 import NotFound from "./pages/NotFound";
 import NotFoundPage from "./pages/NotFoundPage";
 import Loaders from "./pages/Loaders";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/authors/:id" element={<AuthorDetail />} />
           <Route path="/publications" element={<Publications />} />
           <Route path="/publications/:id" element={<PublicationDetail />} />
+          <Route path="/contacts" element={<Contacts />} />
           <Route path="/loaders" element={<Loaders />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFoundPage />} />
